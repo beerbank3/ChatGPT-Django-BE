@@ -1,11 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Chatbot{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     </head>
     <body>
+        <button onclick="openModal()">Open Modal</button>
         {% block content %}
         {% endblock %}
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>User Login</h2>
+                <form method="post" action="{% url 'user:register' %}" id="loginForm">
+                    {% csrf_token %}
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" name="email"><br>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password"><br>
+                    <input type="submit" value="회원가입">
+                </form>
+                <div id="errorDiv"></div>
+            </div>
+        </div>
     </body>
+    <script src="{% static 'js/main.js' %}"></script>
 </html>
