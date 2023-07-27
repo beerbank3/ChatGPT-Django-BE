@@ -33,7 +33,11 @@ class ChatView(View):
             )
             response = completions.choices[0].text.strip()
 
-            conversation = Conversation(prompt=prompt, response=response)
+            if request.user.is_authenticated:
+                user = request.user
+            else:
+                user = None
+            conversation = Conversation(user=user, question=prompt, answer=response)
             conversation.save()
 
             # 대화 기록에 새로운 응답 추가
