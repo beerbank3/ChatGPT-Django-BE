@@ -1,6 +1,6 @@
 # ChatGPT-Django
 ChatGPT를 사용한 Django 프로젝트
-
+AI 기반 블로그 포스트 작성 도우미
 # 요구사항
 
 **모든 구현은 DRF를 이용하여서 구현**
@@ -23,7 +23,6 @@ ChatGPT를 사용한 Django 프로젝트
 
 5. 채팅 조회 기능 구현:
 - 저장된 채팅 내역 조회용 API 구현
-- 저장된 채팅 내역은 로그인하지 않은 유저도 볼 수 있도록 설정
 
 6. 프론트엔드 연동:
 - 프론트엔드에서 Django 서버를 통해 챗봇 API 요청 보내는 로직 구현
@@ -31,18 +30,19 @@ ChatGPT를 사용한 Django 프로젝트
 
 # 개발하면서 만난 에러들
 
+- 에러메세지
 ```
 django.db.migrations.exceptions.InconsistentMigrationHistory: Migration admin.0001_initial is applied before its dependency user.0001_initial on database 'default'.
 ```
 
-app.settings.py
+- app.settings.py
 ```
 INSTALLED_APPS = [
     'django.contrib.admin', # 주석처리
 ]
 ```
 
-app.urls.py
+- app.urls.py
 ```
 from django.contrib import admin #주석처리
 

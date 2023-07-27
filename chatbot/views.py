@@ -1,19 +1,37 @@
 # chatbot/views.py
 from django.shortcuts import render
-from django.views import View
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from dotenv import load_dotenv
+from django.utils.decorators import method_decorator
+from django_ratelimit.decorators import ratelimit
 import openai
 import os
 from .models import Conversation
+from .decorators import token_required
 
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-class ChatView(View):
+class ChatView(APIView):
+    @method_decorator(token_required)
+    def dispatch(self, request, user, token, *args, **kwargs):
+        self.user = user  # 유저 정보를 클래스의 속성으로 저장
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
-        conversations = request.session.get('conversations', [])
-        return render(request, 'chat.html', {'conversations': conversations})
-
+        conversations = Conversation.objects.filter(user=self.user)
+        serialized_conversations = [
+            {
+                'question': conversation.question,
+                'answer': conversation.answer,
+                'created_at': conversation.created_at,
+            }
+            for conversation in conversations
+        ]
+        return Response({'conversations': serialized_conversations})
+    
+    @method_decorator(ratelimit(key='user', rate='5/d'))
     def post(self, request, *args, **kwargs):
         prompt = request.POST.get('prompt')
         if prompt:
