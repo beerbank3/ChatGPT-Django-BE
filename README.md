@@ -1,6 +1,10 @@
 # ChatGPT-Django
 ChatGPT를 사용한 Django 프로젝트
 AI 기반 블로그 포스트 작성 도우미
+
+# 서버
+- 서버 실행 
+sudo /srv/ChatGPT-Django-BE/venv/bin/uwsgi -i /srv/ChatGPT-Django-BE/.config/uwsgi/app.ini
 # 요구사항
 
 **모든 구현은 DRF를 이용하여서 구현**
