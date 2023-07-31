@@ -17,7 +17,8 @@ class Registration(APIView):
             if serializer.is_valid():
                 serializer.save()
                 user = serializer.instance  # 새로 생성된 사용자 객체 가져오기
-                return Response({'message': f'{user.name}님 반갑습니다.'}, status=status.HTTP_201_CREATED)
+                token, _ = Token.objects.get_or_create(user=user)
+                return Response({'message': f'{user.name}님 반갑습니다.', 'token': token.key}, status=status.HTTP_201_CREATED)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
@@ -46,7 +47,18 @@ class Login(APIView):
 
 
 ### Logout
-class Logout(View):
-    def get(self, request):
-        logout(request)
-        return redirect('blog:list')
+class Logout(APIView):
+    def post(self, request):
+        try:
+            # 사용자의 토큰 가져오기
+            auth_token = request.META.get('HTTP_AUTHORIZATION')
+            if auth_token:
+                # "Token <토큰값>" 형식에서 "토큰값"만 추출
+                token = auth_token.split()[1]
+
+                # 토큰 삭제하여 로그아웃 처리
+                Token.objects.filter(key=token).delete()
+
+            return Response({'message': '로그아웃되었습니다.'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

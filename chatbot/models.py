@@ -8,6 +8,7 @@ class Conversation(models.Model):
     question = models.TextField()
     answer = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    is_delete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.created_at

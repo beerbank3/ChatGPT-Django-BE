@@ -1,0 +1,27 @@
+from chatbot.models import Conversation
+from user.models import User
+from django.contrib.auth import authenticate
+import random
+from django_seed import Seed
+from django.utils import timezone
+from datetime import timedelta, datetime
+
+user = authenticate(email='test123@gmail.com', password='test123')
+
+# Conversation 생성
+seeder = Seed.seeder()
+
+# 랜덤한 날짜 생성 함수
+def random_datetime():
+    start = datetime.now() - timedelta(days=365)
+    end = datetime.now()
+    random_timedelta = random.randint(0, int((end - start).total_seconds()))
+    return start + timedelta(seconds=random_timedelta)
+
+seeder.add_entity(Conversation, 10, {
+    'user': user,
+    'question': lambda x: f"What is your name, {user.name}?",
+    'answer': lambda x: f"My name is {random.choice(['Alice', 'Bob', 'Charlie'])}.",
+    'created_at': lambda x: random_datetime(),  # 랜덤한 날짜로 설정
+})
+seeder.execute()

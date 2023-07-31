@@ -2,7 +2,25 @@
 ChatGPT를 사용한 Django 프로젝트
 AI 기반 블로그 포스트 작성 도우미
 
-# 서버
+# 서버 설치
+https://nerogarret.tistory.com/47?category=800142
+
+```
+sudo apt-get update
+sudo apt-get dist-upgrade 
+sudo apt-get install python3-pip 
+sudo chown -R bitnami:bitnami /srv/ 
+cd /srv
+git clone [레포지토리 주소]
+cd [프로젝트 이름]
+
+sudo apt-get install python3-venv
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+
+python3 manage.py runserver 0:8000
+```
 - 서버 실행 
 sudo /srv/ChatGPT-Django-BE/venv/bin/uwsgi -i /srv/ChatGPT-Django-BE/.config/uwsgi/app.ini
 # 요구사항
