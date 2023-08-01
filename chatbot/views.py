@@ -55,8 +55,12 @@ class ChatView(APIView):
         }
         return Response(serialized_conversations)
     
-    # @method_decorator(ratelimit(key='user', rate='5/d'))
+    @method_decorator(ratelimit(key='user', rate='5/d', block=False))
     def post(self, request, *args, **kwargs):
+        was_limited = getattr(request, 'limited', False)
+        if was_limited:
+            return Response({'message':'이미 5번 이상 요청하셨습니다.'}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+        
         if 'messages' not in request.session:
             request.session['messages'] = [
                 {"role": "system", "content": "너는 AI 블로그 도우미야"},
