@@ -25,6 +25,8 @@ class ChatView(APIView):
     
     def get(self, request, *args, **kwargs):
         today = date.today()
+        if request.GET.get('date') and request.GET.get('date') != "undefined":
+            today = request.GET.get('date')
         # 오늘 날짜의 대화 기록을 가져옵니다.
         conversations_today = Conversation.objects.filter(user=self.user, created_at__date=today)
         serialized_conversations_today = [
@@ -36,8 +38,7 @@ class ChatView(APIView):
             for conversation in conversations_today
         ]
 
-        # 다른 날짜의 대화 기록을 가져와 그룹화합니다. (오늘 제외)
-        conversations_other_dates = Conversation.objects.filter(user=self.user).exclude(created_at__date=today).values('created_at__date').annotate(count=Count('created_at__date'), first_question=Min('question'))
+        conversations_other_dates = Conversation.objects.filter(user=self.user).values('created_at__date').annotate(count=Count('created_at__date'), first_question=Min('question')).order_by('-created_at__date')
         serialized_conversations_other_dates = [
             {
                 'date': item['created_at__date'],
@@ -54,42 +55,7 @@ class ChatView(APIView):
         }
         return Response(serialized_conversations)
     
-    # # @method_decorator(ratelimit(key='user', rate='5/d'))
-    # def post(self, request, *args, **kwargs):
-    #     # if 'conversations' not in request.session:
-    #     #     request.session['conversations'] = [{"role": "system", "content": "너는 AI 블로그 도우미야"}]
-    #     prompt = request.POST.get('prompt')
-    #     if prompt:
-    #         # 이전 대화 기록 가져오기
-    #         session_conversations = request.session.get('conversations', [])
-    #         previous_conversations = "\n".join([f"User: {c['prompt']}\nAI: {c['response']}" for c in session_conversations])
-    #         prompt_with_previous = f"{previous_conversations}\nUser: {prompt}\nAI:"
-
-    #         model_engine = "text-davinci-003"
-    #         completions = openai.Completion.create(
-    #             engine=model_engine,
-    #             prompt=prompt_with_previous,
-    #             max_tokens=1024,
-    #             n=5,
-    #             stop=None,
-    #             temperature=0.5,
-    #         )
-    #         response = completions.choices[0].text.strip()
-
-    #         if request.user.is_authenticated:
-    #             user = request.user
-    #         else:
-    #             user = None
-    #         conversation = Conversation(user=user, question=prompt, answer=response)
-    #         conversation.save()
-
-    #         # 대화 기록에 새로운 응답 추가
-    #         session_conversations.append({'question': prompt, 'answer': response})
-    #         request.session['conversations'] = session_conversations
-    #         request.session.modified = True
-
-    #     return self.get(request, *args, **kwargs)
-    
+    # @method_decorator(ratelimit(key='user', rate='5/d'))
     def post(self, request, *args, **kwargs):
         if 'messages' not in request.session:
             request.session['messages'] = [
@@ -97,6 +63,7 @@ class ChatView(APIView):
             ]
         
         prompt = request.POST.get('prompt')
+        date = request.POST.get('date')
         if prompt:
             temperature = float(request.POST.get('temperature', 0.1))
 
@@ -115,7 +82,7 @@ class ChatView(APIView):
                 user = request.user
             else:
                 user = None
-            conversation = Conversation(user=user, question=prompt, answer=formatted_response)
+            conversation = Conversation(user=user, question=prompt, answer=formatted_response, created_at=date)
             conversation.save()
 
             request.session['messages'].append({"role": "assistant", "content": formatted_response})

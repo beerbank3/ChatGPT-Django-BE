@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from datetime import date
 from .serializers import UserSerializer, LoginSerializer
 from .models import User
 
@@ -18,7 +19,8 @@ class Registration(APIView):
                 serializer.save()
                 user = serializer.instance  # 새로 생성된 사용자 객체 가져오기
                 token, _ = Token.objects.get_or_create(user=user)
-                return Response({'message': f'{user.name}님 반갑습니다.', 'token': token.key}, status=status.HTTP_201_CREATED)
+                today = date.today()
+                return Response({'message': f'{user.name}님 반갑습니다.', 'token': token.key, 'date':today}, status=status.HTTP_201_CREATED)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
@@ -37,7 +39,8 @@ class Login(APIView):
                 user = authenticate(email=email, password=password)
                 if user:
                     token, _ = Token.objects.get_or_create(user=user)
-                    return Response({'token': token.key}, status=status.HTTP_200_OK)
+                    today = date.today()
+                    return Response({'token': token.key, 'date':today}, status=status.HTTP_200_OK)
                 else:
                     return Response({'error': '유효하지 않은 인증 정보입니다.'}, status=status.HTTP_401_UNAUTHORIZED)
             else:
