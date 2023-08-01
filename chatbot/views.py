@@ -54,41 +54,77 @@ class ChatView(APIView):
         }
         return Response(serialized_conversations)
     
-    # @method_decorator(ratelimit(key='user', rate='5/d'))
+    # # @method_decorator(ratelimit(key='user', rate='5/d'))
+    # def post(self, request, *args, **kwargs):
+    #     # if 'conversations' not in request.session:
+    #     #     request.session['conversations'] = [{"role": "system", "content": "너는 AI 블로그 도우미야"}]
+    #     prompt = request.POST.get('prompt')
+    #     if prompt:
+    #         # 이전 대화 기록 가져오기
+    #         session_conversations = request.session.get('conversations', [])
+    #         previous_conversations = "\n".join([f"User: {c['prompt']}\nAI: {c['response']}" for c in session_conversations])
+    #         prompt_with_previous = f"{previous_conversations}\nUser: {prompt}\nAI:"
+
+    #         model_engine = "text-davinci-003"
+    #         completions = openai.Completion.create(
+    #             engine=model_engine,
+    #             prompt=prompt_with_previous,
+    #             max_tokens=1024,
+    #             n=5,
+    #             stop=None,
+    #             temperature=0.5,
+    #         )
+    #         response = completions.choices[0].text.strip()
+
+    #         if request.user.is_authenticated:
+    #             user = request.user
+    #         else:
+    #             user = None
+    #         conversation = Conversation(user=user, question=prompt, answer=response)
+    #         conversation.save()
+
+    #         # 대화 기록에 새로운 응답 추가
+    #         session_conversations.append({'question': prompt, 'answer': response})
+    #         request.session['conversations'] = session_conversations
+    #         request.session.modified = True
+
+    #     return self.get(request, *args, **kwargs)
+    
     def post(self, request, *args, **kwargs):
-        # if 'conversations' not in request.session:
-        #     request.session['conversations'] = [{"role": "system", "content": "너는 AI 블로그 도우미야"}]
+        if 'messages' not in request.session:
+            request.session['messages'] = [
+                {"role": "system", "content": "너는 AI 블로그 도우미야"},
+            ]
+        
         prompt = request.POST.get('prompt')
         if prompt:
-            # 이전 대화 기록 가져오기
-            session_conversations = request.session.get('conversations', [])
-            previous_conversations = "\n".join([f"User: {c['prompt']}\nAI: {c['response']}" for c in session_conversations])
-            prompt_with_previous = f"{previous_conversations}\nUser: {prompt}\nAI:"
+            temperature = float(request.POST.get('temperature', 0.1))
 
-            model_engine = "text-davinci-003"
-            completions = openai.Completion.create(
-                engine=model_engine,
-                prompt=prompt_with_previous,
-                max_tokens=1024,
-                n=5,
-                stop=None,
-                temperature=0.5,
+            request.session['messages'].append({"role": "user", "content": prompt})
+            request.session.modified = True
+
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=request.session['messages'],
+                temperature=temperature,
+                max_tokens=1000,
             )
-            response = completions.choices[0].text.strip()
 
+            formatted_response = response['choices'][0]['message']['content']
             if request.user.is_authenticated:
                 user = request.user
             else:
                 user = None
-            conversation = Conversation(user=user, question=prompt, answer=response)
+            conversation = Conversation(user=user, question=prompt, answer=formatted_response)
             conversation.save()
 
-            # 대화 기록에 새로운 응답 추가
-            session_conversations.append({'question': prompt, 'answer': response})
-            request.session['conversations'] = session_conversations
+            request.session['messages'].append({"role": "assistant", "content": formatted_response})
             request.session.modified = True
 
-        return self.get(request, *args, **kwargs)
+            messages = {
+                'messages' : request.session['messages']
+            }
+            return Response(messages)
     
 
 class ChatRemove(APIView):
