@@ -28,7 +28,7 @@ class ChatView(APIView):
         if request.GET.get('date') and request.GET.get('date') != "undefined":
             today = request.GET.get('date')
         # 오늘 날짜의 대화 기록을 가져옵니다.
-        conversations_today = Conversation.objects.filter(user=self.user, created_at__date=today)
+        conversations_today = Conversation.objects.filter(user=self.user, created_at__date=today, is_delete=False)
         serialized_conversations_today = [
             {
                 'question': conversation.question,
@@ -38,7 +38,7 @@ class ChatView(APIView):
             for conversation in conversations_today
         ]
 
-        conversations_other_dates = Conversation.objects.filter(user=self.user).values('created_at__date').annotate(count=Count('created_at__date'), first_question=Min('question')).order_by('-created_at__date')
+        conversations_other_dates = Conversation.objects.filter(user=self.user, is_delete=False).values('created_at__date').annotate(count=Count('created_at__date'), first_question=Min('question')).order_by('-created_at__date')
         serialized_conversations_other_dates = [
             {
                 'date': item['created_at__date'],
@@ -107,7 +107,7 @@ class ChatRemove(APIView):
             date = datetime.strptime(date_str, '%Y-%m-%d')
             conversations = Conversation.objects.filter(created_at__date=date,user=self.user).values('question', 'created_at').annotate(count=models.Count('id'))
             for conversation in conversations:
-                if conversation['count'] > 1:
+                if conversation['count'] > 0:
                     Conversation.objects.filter(question=conversation['question'], created_at=conversation['created_at']).update(is_delete=True)
             return Response({'message': 'is_delete를 수정하였습니다.'}, status=status.HTTP_200_OK)
         except ValueError:

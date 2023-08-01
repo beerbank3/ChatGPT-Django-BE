@@ -18,7 +18,7 @@ def random_datetime():
     random_timedelta = random.randint(0, int((end - start).total_seconds()))
     return start + timedelta(seconds=random_timedelta)
 
-seeder.add_entity(Conversation, 10, {
+seeder.add_entity(Conversation, 30, {
     'user': user,
     'question': lambda x: f"What is your name, {user.name}?",
     'answer': lambda x: f"My name is {random.choice(['Alice', 'Bob', 'Charlie'])}.",
