@@ -2,7 +2,11 @@
 ChatGPT를 사용한 Django 프로젝트
 AI 기반 블로그 포스트 작성 도우미
 
-
+# 배포
+- 프론트엔드 github  
+https://github.com/beerbank3/ChatGPT-Django-FE  
+- 사이트 URL  
+http://gptdjango.site/
 # ERD 모델
 
 ![ERD](README/ERD.png)
