@@ -22,7 +22,8 @@ pip install uwsgi
 python3 manage.py runserver 0:8000
 ```
 - 서버 실행 
-sudo /srv/ChatGPT-Django-BE/venv/bin/uwsgi -i /srv/ChatGPT-Django-BE/.config/uwsgi/app.ini
+프로젝트 폴더 안에서
+uwsgi -i .config/uwsgi/uwsgi.ini
 # 요구사항
 
 **모든 구현은 DRF를 이용하여서 구현**
