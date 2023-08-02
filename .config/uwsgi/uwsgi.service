@@ -3,7 +3,7 @@ Description=uWSGI service
 After=syslog.target
 
 [Service]
-ExecStart=/home/bitnami/venv/bin/uwsgi -i /srv/ChatGPT-Django-BE/.config/uwsgi/app.ini
+ExecStart=/srv/ChatGPT-Django-BE/venv/bin/uwsgi -i /srv/ChatGPT-Django-BE/.config/uwsgi/app.ini
 
 Restart=always
 KillSignal=SIGQUIT
