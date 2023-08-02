@@ -38,7 +38,7 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, max_length=255)
-    name = models.CharField(max_length=50, default='guest_' + generate_random_string(8), unique=True)
+    name = models.CharField(max_length=50, default='guest_' + generate_random_string(8))
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
