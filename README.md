@@ -7,17 +7,17 @@ https://nerogarret.tistory.com/47?category=800142
 
 ```
 sudo apt-get update
-sudo apt-get dist-upgrade 
-sudo apt-get install python3-pip 
-sudo chown -R bitnami:bitnami /srv/ 
+sudo apt-get install python3-venv
+sudo apt-get install libpq-dev
 cd /srv
 git clone [레포지토리 주소]
 cd [프로젝트 이름]
 
-sudo apt-get install python3-venv
 python3 -m venv venv
 source venv/bin/activate
 pip3 install -r requirements.txt
+
+pip install uwsgi
 
 python3 manage.py runserver 0:8000
 ```
