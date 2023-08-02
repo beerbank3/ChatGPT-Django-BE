@@ -51,7 +51,11 @@ http://gptdjango.site/
 ![Alt text](README/login.png)
 
 - 글쓰기 기능
-![Alt text](README/image.png)
+![Alt text](README/base.png)
+
+- 하루5번 요청 가능  
+![Alt text](README/day5.png)
+![Alt text](README/daycode.png)
 
 # 개발하면서 만난 에러들
 
