@@ -2,28 +2,11 @@
 ChatGPT를 사용한 Django 프로젝트
 AI 기반 블로그 포스트 작성 도우미
 
-# 서버 설치
-https://nerogarret.tistory.com/47?category=800142
 
-```
-sudo apt-get update
-sudo apt-get install python3-venv
-sudo apt-get install libpq-dev
-cd /srv
-git clone [레포지토리 주소]
-cd [프로젝트 이름]
+# ERD 모델
 
-python3 -m venv venv
-source venv/bin/activate
-pip3 install -r requirements.txt
+![ERD](README/ERD.png)
 
-pip install uwsgi
-
-python3 manage.py runserver 0:8000
-```
-- 서버 실행 
-프로젝트 폴더 안에서
-uwsgi -i .config/uwsgi/uwsgi.ini
 # 요구사항
 
 **모든 구현은 DRF를 이용하여서 구현**

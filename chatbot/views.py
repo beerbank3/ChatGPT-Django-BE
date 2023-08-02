@@ -63,7 +63,7 @@ class ChatView(APIView):
         
         if 'messages' not in request.session:
             request.session['messages'] = [
-                {"role": "system", "content": "너는 AI 블로그 도우미야"},
+                {"role": "system", "content": "너는 AI 블로그 도우미야 질문이 들어오면 블로그에 쓸 포스터형식으로 작성해줘"},
             ]
         
         prompt = request.POST.get('prompt')
