@@ -34,6 +34,21 @@ AI 기반 블로그 포스트 작성 도우미
 - 프론트엔드에서 Django 서버를 통해 챗봇 API 요청 보내는 로직 구현
 - API 응답값을 프론트엔드에 반영하는 로직 추가
 
+7. 배포:
+- 내 github-page를 http로 배포하기
+
+
+# 페이지
+- 메인페이지
+![mainpage](README/main.png)
+
+- 회원가입, 로그인
+![Alt text](README/register.png)
+![Alt text](README/login.png)
+
+- 글쓰기 기능
+![Alt text](README/image.png)
+
 # 개발하면서 만난 에러들
 
 - 에러메세지
