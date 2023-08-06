@@ -1,5 +1,5 @@
 # ChatGPT-Django
-ChatGPT를 사용한 Django 프로젝트
+ChatGPT를 사용한 Django 프로젝트  
 AI 기반 블로그 포스트 작성 도우미
 
 # 배포
@@ -11,6 +11,70 @@ http://gptdjango.site/
 
 ![ERD](README/ERD.png)
 
+# 폴더 구조 
+```
+|   .env
+|   .gitignore
+|   data_seed.txt
+|   db.sqlite3
+|   manage.py
+|   README.md
+|   requirements.txt
+|
++---.config
+|   +---nginx
+|   |       gptdjango.conf
+|   |
+|   \---uwsgi
+|           uwsgi.ini
+|           uwsgi.service
+|
++---app
+|   |   asgi.py
+|   |   settings.env
+|   |   settings.py
+|   |   urls.py
+|   |   wsgi.py
+|   |   __init__.py
+|
++---chatbot
+|   |   admin.py
+|   |   apps.py
+|   |   decorators.py
+|   |   models.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |
+|   +---migrations
+|       |   0001_initial.py
+|       |   0002_initial.py
+|       |   0003_conversation_is_delete.py
+|       |   0004_alter_conversation_created_at.py
+|       |   __init__.py
+|
++---README
+|       base.png
+|       day5.png
+|       daycode.png
+|       ERD.png
+|       login.png
+|       main.png
+|       register.png
+|
+\---user
+    |   admin.py
+    |   apps.py
+    |   forms.py
+    |   models.py
+    |   serializers.py
+    |   tests.py
+    |   urls.py
+    |   views.py
+    |   __init__.py
+    
+```
 # 요구사항
 
 **모든 구현은 DRF를 이용하여서 구현**
