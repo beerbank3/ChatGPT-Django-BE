@@ -2,6 +2,20 @@
 ChatGPT를 사용한 Django 프로젝트  
 AI 기반 블로그 포스트 작성 도우미
 
+# 개발 일정  
+2023.07.26 ~ 2023.08.02
+
+# URL 설계  
+|------|---|---|
+|User|||
+|회원가입|user/register/|post|
+|로그인|user/login/|post|
+|로그아웃|user/logout/|post|
+|chatbot|||
+|메인페이지|chatbot/|get|
+|글쓰기|chatbot/|post|
+|글삭제|chatbot/delete|post|
+
 # 배포
 - 프론트엔드 github  
 https://github.com/beerbank3/ChatGPT-Django-FE  
