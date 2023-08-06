@@ -46,13 +46,6 @@ http://gptdjango.site/
 |   |   urls.py
 |   |   views.py
 |   |   __init__.py
-|   |
-|   +---migrations
-|       |   0001_initial.py
-|       |   0002_initial.py
-|       |   0003_conversation_is_delete.py
-|       |   0004_alter_conversation_created_at.py
-|       |   __init__.py
 |
 +---README
 |       base.png
@@ -73,7 +66,7 @@ http://gptdjango.site/
     |   urls.py
     |   views.py
     |   __init__.py
-    
+
 ```
 # 요구사항
 
