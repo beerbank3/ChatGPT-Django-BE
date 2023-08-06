@@ -22,9 +22,6 @@ http://gptdjango.site/
 |   requirements.txt
 |
 +---.config
-|   +---nginx
-|   |       gptdjango.conf
-|   |
 |   \---uwsgi
 |           uwsgi.ini
 |           uwsgi.service
