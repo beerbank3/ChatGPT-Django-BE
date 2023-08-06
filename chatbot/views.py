@@ -18,12 +18,18 @@ load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
 class ChatView(APIView):
+    """ 메인페이지,채팅 ChatGPT Api 연결 class
+    """
     @method_decorator(token_required)
     def dispatch(self, request, user, token, *args, **kwargs):
+        """유저 정보 확인
+        """
         self.user = user  # 유저 정보를 클래스의 속성으로 저장
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
+        """ 메인페이지
+        """
         today = date.today()
         if request.GET.get('date') and request.GET.get('date') != "undefined":
             today = request.GET.get('date')

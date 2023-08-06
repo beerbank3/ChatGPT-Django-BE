@@ -46,7 +46,7 @@ http://gptdjango.site/
 - 메인페이지
 ![mainpage](README/main.png)
 
-- 회원가입, 로그인
+- 회원가입, 로그인  
 ![Alt text](README/register.png)
 ![Alt text](README/login.png)
 
