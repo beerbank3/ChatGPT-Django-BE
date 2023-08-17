@@ -21,7 +21,12 @@ AI 기반 블로그 포스트 작성 도우미
 - 프론트엔드 github  
 https://github.com/beerbank3/ChatGPT-Django-FE  
 - 사이트 URL  
-http://gptdjango.site/
+http://gptdjango.site/  
+- 테스트 아이디
+```
+ID: test123@gmail.com
+PW: test123
+```
 # ERD 모델
 
 ![ERD](README/ERD.png)
